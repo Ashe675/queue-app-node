@@ -1,3 +1,7 @@
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+const host = window.location.host;
+const wsUrl = `${protocol}://${host}/ws`;
+
 async function getWorkingOnTickets() {
   const tickets = await fetch("/api/ticket/working-on").then((res) =>
     res.json()
@@ -21,7 +25,7 @@ function renderTickets(tickets = []) {
 }
 
 function connectToWebSockets() {
-  const socket = new WebSocket("ws://localhost:3000/ws");
+  const socket = new WebSocket(wsUrl);
 
   socket.onmessage = (event) => {
     const { type, payload } = JSON.parse(event.data);

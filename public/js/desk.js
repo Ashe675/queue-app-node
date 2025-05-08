@@ -4,6 +4,9 @@ const noMoreAlert = document.querySelector(".alert");
 const btnDraw = document.querySelector("#btn-draw");
 const btnDone = document.querySelector("#btn-done");
 const lblCurrentTicket = document.querySelector("small");
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+const host = window.location.host;
+const wsUrl = `${protocol}://${host}/ws`;
 
 const searchParams = new URLSearchParams(window.location.search);
 let workingTicket = null;
@@ -66,7 +69,7 @@ async function finishTicket() {
 }
 
 function connectToWebSockets() {
-  const socket = new WebSocket("ws://localhost:3000/ws");
+  const socket = new WebSocket(wsUrl);
 
   socket.onmessage = (event) => {
     const { type, payload } = JSON.parse(event.data);
